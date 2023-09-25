@@ -80,3 +80,59 @@ resource "aws_nat_gateway" "main" {
 resource "aws_eip" "main" {
   domain = "vpc"
 }
+
+resource "aws_security_group" "my_sg" {
+  name        = "my_sg"
+  description = "My Security Group"
+  
+  vpc_id = aws_vpc.main.id
+
+  ingress {
+    description = "HTTP"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "HTTP"
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "SSH"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "Security Group"
+  }
+}
+
+
+resource "aws_instance" "ubuntu" {
+  ami = "ami-0ab1a82de7ca5889c"
+  instance_type = "t2.micro"
+  key_name = "jenkins-key"
+  subnet_id = aws_subnet.public_a.id
+
+  tags = {
+    Name = "Jenkins Master"
+  }
+
+  associate_public_ip_address = true
+}
