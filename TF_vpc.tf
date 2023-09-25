@@ -42,24 +42,6 @@ resource "aws_subnet" "private_b" {
   }
 }
 
-resource "aws_subnet" "database_a" {
-  vpc_id = aws_vpc.main.id
-  cidr_block = "10.79.5.0/24"
-  availability_zone = "eu-central-1a"
-  tags = {
-    Name = "Database subnet a"
-  }
-}
-
-resource "aws_subnet" "database_b" {
-  vpc_id = aws_vpc.main.id
-  cidr_block = "10.79.6.0/24"
-  availability_zone = "eu-central-1b"
-  tags = {
-    Name = "Database subnet b"
-  }
-}
-
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id
   tags = {
@@ -97,16 +79,4 @@ resource "aws_nat_gateway" "main" {
 
 resource "aws_eip" "main" {
   domain = "vpc"
-}
-
-output "public_subnet_a_id" {
-  value = aws_subnet.public_a.id
-}
-
-output "public_subnet_b_id" {
-  value = aws_subnet.public_b.id
-}
-
-output "vpc_id" {
-  value = aws_vpc.main.id
 }
