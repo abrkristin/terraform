@@ -97,7 +97,7 @@ resource "aws_security_group" "web_sg" {
 
 resource "aws_instance" "web_instance" {
   ami           = "ami-0ab1a82de7ca5889c"
-  instance_type = "t2.nano"
+  instance_type = "t2.micro"
   key_name      = "jenkins-key"
 
   subnet_id                   = aws_subnet.some_public_subnet.id
